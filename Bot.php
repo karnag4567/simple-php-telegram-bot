@@ -3,22 +3,22 @@
 error_reporting(0);
 date_default_timezone_set('America/Lima');
 
-#ARCHIVOS REQUERIDOS
+#REQUIRED FILES
 
     require_once('Functions.php');
 
-#BOT TOKEN Y MI ID
+#BOT TOKEN AND MY ID
 
-    $My_ID = '1466851830'; #AQUI VA TU ID, VARIABLE NECESARIA PARA AGREGAR NUEVOS USERS O GRUPOS.
-    $botToken = '1863317709:AAH55mEVMdNySI9yKYtd9tihbaWU8uEjFCo'; #AQUI AGREGAS EL TOKEN DEL BOT.
+    $My_ID = '1466851830'; #HERE GOES YOUR ID, VARIABLE NECESSARY TO ADD NEW USERS OR GROUPS.
+    $botToken = '1863317709:AAH55mEVMdNySI9yKYtd9tihbaWU8uEjFCo'; #HERE YOU ADD THE BOT TOKEN.
 
-#EMPIEZA CAPTURA DE VARIABLES ENVIADOS DEL CHAT
+#START CAPTURE OF VARIABLES SENT FROM THE CHAT
 
     $update = file_get_contents('php://input');
     $update = json_decode($update, true);
     $e = print_r($update);
 
-    #DEFINIENDO VARIABLES DEL MENSAJE
+    #DEFINING MESSAGE VARIABLES
 
     $chatId = $update["message"]["chat"]["id"];
     $userId = $update["message"]["from"]["id"];
@@ -29,188 +29,188 @@ date_default_timezone_set('America/Lima');
     $message_id = $update["message"]["message_id"];
     $info = json_encode($update, JSON_PRETTY_PRINT);
 
-#VERIFICACION DE PRIVILEGIOS DE ADMIN
+#ADMIN PRIVILEGE CHECK
 
     if ($userId != $My_ID) {
-        VerificarAdmin($userId);
+        CheckAdmin($userId);
     }
 
-#COMANDOS DE ADMIN
+#ADMIN COMMANDS
 
-    #COMANDO PARA AÑADIR CHATS Y PUEDAN UTILIZAR TU BOT, EJEMPLO /add 1466851830
+    #COMMAND TO ADD CHATS AND THEY CAN USE YOUR BOT, EXAMPLE /add 1466851830
 
     if (strpos($message, "!add") === 0 || strpos($message, "/add") === 0) {
         if ($userId != $My_ID && $Admin != true) {
-            $message = "No estas autorizado para añadir nuevos usuarios y/o grupos.\nContacta con @KingProOficial.";
-            EnviarMensaje($chatId, $message, $message_id);
+            $message = "You are not authorized to add new users and/or groups.\nContact @KingProOficial.";
+            SendMessage($chatId, $message, $message_id);
             exit();
         } elseif ($userId == $My_ID || $Admin == true) {
-            $Agregar = substr($message, 5);
-            AñadirChatID($Agregar);
-            $message_admin = "✔️ Se añadio correctamente al usuario.";
-            $message_user = "✔️ Permisos concedidos para usar @NinjaKingChkBot.";
-            EnviarMensaje($chatId, $message_admin, $message_id);
-            EnviarMensaje($Agregar, $message_user, "");
+            $Add = substr($message, 5);
+            AddChatID($Add);
+            $message_admin = "✔️ The user was successfully added.";
+            $message_user = "✔️ Permissions granted to use @NinjaKingChkBot.";
+            SendMessage($chatId, $message_admin, $message_id);
+            SendMessage($Add, $message_user, "");
             exit();
         }
     }
 
-    #COMANDO PARA SUBIR DE RANGO EN TU BOT, EJEMPLO /premium 1466851830
+    #COMMAND TO RANK UP YOUR BOT, EXAMPLE /premium 1466851830
 
     if (strpos($message, "!premium") === 0 || strpos($message, "/premium") === 0) {
         if ($userId != $My_ID && $Admin != true) {
-            $message = "No estas autorizado para subir el rango a usuarios y/o grupos.\nContacta con @KingProOficial.";
-            EnviarMensaje($chatId, $message, $message_id);
+            $message = "You are not authorized to rank up users and/or groups.\nContact @KingProOficial.";
+            SendMessage($chatId, $message, $message_id);
             exit();
         } elseif ($userId == $My_ID || $Admin == true) {
-            $Agregar = substr($message, 9);
-            PremiumChatID($Agregar);
-            $message_admin = "✔️ Cuenta actualizada a PREMIUM correctamente.";
-            $message_user = "✔️ Tu cuenta fue actualizada a PREMIUM, disfruta de tu membresia con @NinjaKingChkBot.";
-            EnviarMensaje($chatId, $message_admin, $message_id);
-            EnviarMensaje($Agregar, $message_user, "");
+            $Add = substr($message, 9);
+            PremiumChatID($Add);
+            $message_admin = "✔️ Account upgraded to PREMIUM successfully.";
+            $message_user = "✔️ Your account was upgraded to PREMIUM, enjoy your membership with @NinjaKingChkBot.";
+            SendMessage($chatId, $message_admin, $message_id);
+            SendMessage($Add, $message_user, "");
             exit();
         }
     }
 
-    #COMANDO PARA AÑADIR ADMIN
+    #COMMAND TO ADD ADMIN
 
     if (strpos($message, "!setadmin") === 0 || strpos($message, "/setadmin") === 0) {
         if ($userId != $My_ID) {
-            $message = "No estas autorizado para subir el rango a usuarios y/o grupos.\nContacta con @KingProOficial.";
-            EnviarMensaje($chatId, $message, $message_id);
+            $message = "You are not authorized to rank up users and/or groups.\nContact @KingProOficial.";
+            SendMessage($chatId, $message, $message_id);
             exit();
         } elseif ($userId == $My_ID) {
-            $Agregar = substr($message, 10);
-            SetAdmin($Agregar);
-            $message_admin = "✔️ Cuenta actualizada a ADMINISTRADOR correctamente.";
-            $message_user = "✔️ Tu cuenta fue actualizada a ADMINISTRADOR, disfruta de tu membresia con @NinjaKingChkBot.";
-            EnviarMensaje($chatId, $message_admin, $message_id);
-            EnviarMensaje($Agregar, $message_user, "");
+            $Add = substr($message, 10);
+            SetAdmin($Add);
+            $message_admin = "✔️ Account updated to ADMINISTRATOR successfully.";
+            $message_user = "✔️ Your account was upgraded to ADMINISTRATOR, enjoy your membership with @NinjaKingChkBot.";
+            SendMessage($chatId, $message_admin, $message_id);
+            SendMessage($Add, $message_user, "");
             exit();
         }
     }
 
-    #COMANDO PARA BANEAR USERS
+    #COMMAND TO BAN USERS
 
     if (strpos($message, "!ban") === 0 || strpos($message, "/ban") === 0) {
         if ($userId != $My_ID && $Admin != true) {
-            $message = "No estas autorizado para suspender cuentas a usuarios.\nContacta con @KingProOficial.";
-            EnviarMensaje($chatId, $message, $message_id);
+            $message = "You are not authorized to suspend user accounts.\nContact @KingProOficial.";
+            SendMessage($chatId, $message, $message_id);
             exit();
         } elseif ($userId == $My_ID || $Admin == true) {
-            $Agregar = substr($message, 5);
-            Ban($Agregar);
-            $message_admin = "✔️ Cuenta suspendida correctamente.";
-            $message_user = "✔️ Tu cuenta fue suspendida temporalmente, si creees que se trata de un error contacta con @KingProOficial.";
-            EnviarMensaje($chatId, $message_admin, $message_id);
-            EnviarMensaje($Agregar, $message_user, "");
+            $Add = substr($message, 5);
+            Ban($Add);
+            $message_admin = "✔️ Account suspended successfully.";
+            $message_user = "✔️ Your account was temporarily suspended, if you think it is a mistake contact @KingProOficial.";
+            SendMessage($chatId, $message_admin, $message_id);
+            SendMessage($Add, $message_user, "");
             exit();
         }
     }
 
-    #COMANDO PARA DESBANEAR USERS
+    #COMMAND TO UNBAN USERS
 
     if (strpos($message, "!unban") === 0 || strpos($message, "/unban") === 0) {
         if ($userId != $My_ID && $Admin != true) {
-            $message = "No estas autorizado para desbanear cuentas a usuarios.\nContacta con @KingProOficial.";
-            EnviarMensaje($chatId, $message, $message_id);
+            $message = "You are not authorized to unban user accounts.\nContact @KingProOficial.";
+            SendMessage($chatId, $message, $message_id);
             exit();
         } elseif ($userId == $My_ID || $Admin == true) {
-            $Agregar = substr($message, 7);
-            Unban($Agregar);
-            $message_admin = "✔️ Se volvio a activar la cuenta correctamente.";
-            $message_user = "✔️ Tu cuenta fue activada nuevamente, disfruta de @KingProOficial.";
-            EnviarMensaje($chatId, $message_admin, $message_id);
-            EnviarMensaje($Agregar, $message_user, "");
+            $Add = substr($message, 7);
+            Unban($Add);
+            $message_admin = "✔️ The account was successfully reactivated.";
+            $message_user = "✔️ Your account was activated again, enjoy @KingProOficial.";
+            SendMessage($chatId, $message_admin, $message_id);
+            SendMessage($Add, $message_user, "");
             exit();
         }
     }
 
-    #COMANDO PARA BORRAR USERS
+    #COMMAND TO DELETE USERS
 
     if (strpos($message, "!delete") === 0 || strpos($message, "/delete") === 0) {
         if ($userId != $My_ID && $Admin != true) {
-            $message = "No estas autorizado para borrar usuarios y/o grupos.\nContacta con @KingProOficial.";
-            EnviarMensaje($chatId, $message, $message_id);
+            $message = "You are not authorized to delete users and/or groups.\nContact @KingProOficial.";
+            SendMessage($chatId, $message, $message_id);
             exit();
         } elseif ($userId == $My_ID || $Admin == true) {
-            $Agregar = substr($message, 8);
-            Delete($Agregar);
-            $message_admin = "✔️ Se elimino el usuario/grupo correctamente.";
-            $message_user = "✔️ Fuiste eliminado de nuestra Base de Datos\nContacta con @KingProOficial para pedir acceso nuevamente.";
-            EnviarMensaje($chatId, $message_admin, $message_id);
-            EnviarMensaje($Agregar, $message_user, "");
+            $Add = substr($message, 8);
+            Delete($Add);
+            $message_admin = "✔️ The user/group was deleted successfully.";
+            $message_user = "✔️ You were removed from our Database\nContact @KingProOficial to request access again.";
+            SendMessage($chatId, $message_admin, $message_id);
+            SendMessage($Add, $message_user, "");
             exit();
         }
     }
 
-#COMANDOS DE USERS
+#USER COMMANDS
 
-    #COMANDO DE INICIO
+    #START COMMAND
 
     if (strpos($message, "!start") === 0 || strpos($message, "/start") === 0) {
-        $message = "‼️Hola bienvenido al mejor BOT cheker ‼️\nLos comandos disponibles son:\n/bin ⮞ Informacion del BIN.\n/gen ⮞ Generador de Tarjetas.\n/chk ⮞ Chequeo de CCs.\n✅ Que tengas buen día!!!!";
-        EnviarMensaje($chatId, $message, $message_id);
+        $message = "‼️Hello, welcome to the best BOT checker ‼️\nAvailable commands are:\n/bin ⮞ BIN Information.\n/gen ⮞ Card Generator.\n/chk ⮞ CCs Check.\n✅ Have a good day!!!!";
+        SendMessage($chatId, $message, $message_id);
         exit();
     }
 
-    #COMANDO DE INFO
+    #INFO COMMAND
 
     if (strpos($message, "!info") === 0 || strpos($message, "/info") === 0) {
         $message = "ℹ️ INFO SERVICE:\nUsername: @$username\nUser ID: $userId\nChat/Group ID: $chatId";
-        EnviarMensaje($chatId, $message, $message_id);
+        SendMessage($chatId, $message, $message_id);
         exit();
     }
 
-    #COMANDO PARA SABER EL TIEMPO RESTANTE DEL GRUPO
+    #COMMAND TO KNOW THE REMAINING TIME OF THE GROUP
     if (strpos($message, "!mygroup") === 0 || strpos($message, "/mygroup") === 0) {
-        VerificarChatID($chatId); #ESTA FUNCION VERIFICA SI EL USUARIO O GRUPO ESTA AÑADIDO PARA USAR EL BOT.
+        CheckChatID($chatId); #THIS FUNCTION CHECKS IF THE USER OR GROUP IS ADDED TO USE THE BOT.
         MyGroup($chatId);
         exit();
     }
 
-    #COMANDO PARA SABER EL TIEMPO RESTANTE DEL USER
+    #COMMAND TO KNOW THE REMAINING TIME OF THE USER
 
     if (strpos($message, "!myacc") === 0 || strpos($message, "/myacc") === 0) {
-        VerificarChatID($chatId); #ESTA FUNCION VERIFICA SI EL USUARIO O GRUPO ESTA AÑADIDO PARA USAR EL BOT.
+        CheckChatID($chatId); #THIS FUNCTION CHECKS IF THE USER OR GROUP IS ADDED TO USE THE BOT.
         MyAccount($userId);
         exit();
     }
 
-    #COMANDO DE BINLOOKUP /bin o !bin
+    #BINLOOKUP COMMAND /bin or !bin
 
     if (strpos($message, "!bin") === 0 || strpos($message, "/bin") === 0) {
-        $Gateway = 'BIN Lookup'; #DEBES CAMBIAR ESTO SI USARAS OTRO COMANDO, PARA EL DE BIN DEJALO ASI.
-        $Archivo = 'BinLookup.php'; #DEBES CAMBIAR ESTO POR EL NOMBRE DE TU NUEVO ARCHIVO SI ES QUE USARAS OTRO COMANDO.
-        VerificarChatID($chatId); #ESTA FUNCION VERIFICA SI EL USUARIO O GRUPO ESTA AÑADIDO PARA USAR EL BOT.
-        $Card = GetCard($message); #ESTA FUNCION SIRVE PARA AGARRAR LA TARJETA FUERA DEL COMANDO.
-        ConsultaAPI($Archivo, $Card); #ESTA FUNCION CONSULTA A LA API DEPENDIENDO EL NOMBRE DEL ARCHIVO, EN ESTE CASO "BinLookup.php".
-        Respuesta($Gateway, $Resultado, $Rank); #ESTA FUNCION SIRVE PARA VERIFICAR EL TIPO DE RESPUESTA PARA ENVIAR AL USUARIO.
+        $Gateway = 'BIN Lookup'; #YOU SHOULD CHANGE THIS IF YOU USE ANOTHER COMMAND, LEAVE IT LIKE THIS FOR THE BIN ONE.
+        $File = 'BinLookup.php'; #YOU MUST CHANGE THIS TO THE NAME OF YOUR NEW FILE IF YOU USE ANOTHER COMMAND.
+        CheckChatID($chatId); #THIS FUNCTION CHECKS IF THE USER OR GROUP IS ADDED TO USE THE BOT.
+        $Card = GetCard($message); #THIS FUNCTION IS USED TO GRAB THE CARD OUT OF THE COMMAND.
+        QueryAPI($File, $Card); #THIS FUNCTION QUERIES THE API DEPENDING ON THE NAME OF THE FILE, IN THIS CASE "BinLookup.php".
+        Response($Gateway, $Result, $Rank); #THIS FUNCTION IS USED TO VERIFY THE TYPE OF RESPONSE TO SEND TO THE USER.
         exit();
     }
 
-    #COMANDO DE CHEQUEO DE LA CC /chk o !chk
+    #CC CHECK COMMAND /chk or !chk
 
     if (strpos($message, "!chk") === 0 || strpos($message, "/chk") === 0) {
-        $Gateway = 'Stripe Auth'; #DEBES CAMBIAR ESTO SI USARAS OTRO COMANDO PARA NOMBRE DE TU GATE.
-        $Archivo = 'StripeAuth.php'; #DEBES CAMBIAR ESTO POR EL NOMBRE DE TU API.
-        VerificarChatID($chatId); #ESTA FUNCION VERIFICA SI EL USUARIO O GRUPO ESTA AÑADIDO PARA USAR EL BOT
+        $Gateway = 'Stripe Auth'; #YOU SHOULD CHANGE THIS IF YOU USE ANOTHER COMMAND FOR YOUR GATE NAME.
+        $File = 'StripeAuth.php'; #YOU MUST CHANGE THIS TO YOUR API NAME.
+        CheckChatID($chatId); #THIS FUNCTION CHECKS IF THE USER OR GROUP IS ADDED TO USE THE BOT
         Premium();
-        $Card = GetCard($message); #ESTA FUNCION SIRVE PARA AGARRAR LA TARJETA FUERA DEL COMANDO.
-        ConsultaAPI($Archivo, $Card); #ESTA FUNCION CONSULTA A LA API DEPENDIENDO EL NOMBRE DEL ARCHIVO, EN ESTE CASO "BinLookup.php".
-        Respuesta($Gateway, $Resultado, $Rank); #ESTA FUNCION SIRVE PARA VERIFICAR EL TIPO DE RESPUESTA PARA ENVIAR AL USUARIO.
+        $Card = GetCard($message); #THIS FUNCTION IS USED TO GRAB THE CARD OUT OF THE COMMAND.
+        QueryAPI($File, $Card); #THIS FUNCTION QUERIES THE API DEPENDING ON THE NAME OF THE FILE, IN THIS CASE "BinLookup.php".
+        Response($Gateway, $Result, $Rank); #THIS FUNCTION IS USED TO VERIFY THE TYPE OF RESPONSE TO SEND TO THE USER.
         exit();
     }
 
-    #COMANDO DE GENERAR CCs /gen o !gen
+    #COMMAND TO GENERATE CCs /gen or !gen
 
     if (strpos($message, "!gen") === 0 || strpos($message, "/gen") === 0) {
-        $Gateway = 'CC Generator'; #DEBES CAMBIAR ESTO SI USARAS OTRO COMANDO, PARA EL DE BIN DEJALO ASI.
-        $Archivo = 'CardGenerator.php'; #DEBES CAMBIAR ESTO POR EL NOMBRE DE TU NUEVO ARCHIVO SI ES QUE USARAS OTRO COMANDO.
-        VerificarChatID($chatId); #ESTA FUNCION VERIFICA SI EL USUARIO O GRUPO ESTA AÑADIDO PARA USAR EL BOT.
-        $Card = GetCard($message); #ESTA FUNCION SIRVE PARA AGARRAR LA TARJETA FUERA DEL COMANDO.
-        ConsultaAPI($Archivo, $Card); #ESTA FUNCION CONSULTA A LA API DEPENDIENDO EL NOMBRE DEL ARCHIVO, EN ESTE CASO "BinLookup.php".
-        Respuesta($Gateway, $Resultado, $Rank); #ESTA FUNCION SIRVE PARA VERIFICAR EL TIPO DE RESPUESTA PARA ENVIAR AL USUARIO.
+        $Gateway = 'CC Generator'; #YOU SHOULD CHANGE THIS IF YOU USE ANOTHER COMMAND, LEAVE IT LIKE THIS FOR THE BIN ONE.
+        $File = 'CardGenerator.php'; #YOU MUST CHANGE THIS TO THE NAME OF YOUR NEW FILE IF YOU USE ANOTHER COMMAND.
+        CheckChatID($chatId); #THIS FUNCTION CHECKS IF THE USER OR GROUP IS ADDED TO USE THE BOT.
+        $Card = GetCard($message); #THIS FUNCTION IS USED TO GRAB THE CARD OUT OF THE COMMAND.
+        QueryAPI($File, $Card); #THIS FUNCTION QUERIES THE API DEPENDING ON THE NAME OF THE FILE, IN THIS CASE "BinLookup.php".
+        Response($Gateway, $Result, $Rank); #THIS FUNCTION IS USED TO VERIFY THE TYPE OF RESPONSE TO SEND TO THE USER.
         exit();
     }
